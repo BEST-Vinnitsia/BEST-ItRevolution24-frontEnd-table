@@ -1,9 +1,10 @@
 export interface ITable {
   id: string;
   commandName: string;
-  functional: string;
-  code: string;
+  mainF: string;
+  optionF: string;
   design: string;
+  presentation: string;
   sum: string;
 }
 

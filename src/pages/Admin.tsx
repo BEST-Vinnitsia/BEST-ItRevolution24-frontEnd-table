@@ -4,11 +4,12 @@ import { ITable, IUpdateTable } from '../types/table.type';
 import styles from '../styles/admin.module.scss';
 import { SocketService } from '../services/socket';
 import { useConnectSocket } from '../hooks/useConnectSocket';
+import { Block, BlockContainer } from '../components/block';
 
 interface IUpdateTableChange {
   e: React.ChangeEvent<HTMLInputElement>;
   id: string;
-  row: 'functional' | 'code' | 'design';
+  row: 'mainF' | 'optionF' | 'design' | 'presentation';
 }
 
 export default function AdminPage() {
@@ -25,9 +26,10 @@ export default function AdminPage() {
   useEffect(() => {
     for (let i = 0; i < table.length; i++) {
       if (
-        table[i]?.functional === updateTable[i]?.functional &&
-        table[i]?.code === updateTable[i]?.code &&
-        table[i]?.design === updateTable[i]?.design
+        table[i]?.mainF === updateTable[i]?.mainF &&
+        table[i]?.optionF === updateTable[i]?.optionF &&
+        table[i]?.design === updateTable[i]?.design &&
+        table[i]?.presentation === updateTable[i]?.presentation
       ) {
         setIsUpdate(true);
       } else {
@@ -49,9 +51,10 @@ export default function AdminPage() {
         if (item.id === id) {
           return {
             id: item.id,
-            code: row === 'code' ? e.target.value : item.code,
+            mainF: row === 'mainF' ? e.target.value : item.mainF,
+            optionF: row === 'optionF' ? e.target.value : item.optionF,
             design: row === 'design' ? e.target.value : item.design,
-            functional: row === 'functional' ? e.target.value : item.functional,
+            presentation: row === 'presentation' ? e.target.value : item.presentation,
           };
         }
 
@@ -60,53 +63,60 @@ export default function AdminPage() {
     );
   };
 
+  useEffect(() => {
+    send()
+  }, [updateTable]);
+
   return (
     <>
-      <div className={styles.tableContainer}>
-        <div className={styles.tableRow}>
-          <div className={styles.tableColum}>Назва команди</div>
-          <div className={styles.tableColum}>Функціонал</div>
-          <div className={styles.tableColum}>Код</div>
-          <div className={styles.tableColum}>Дизайн</div>
-          <div className={styles.tableColum}>В сумі</div>
-        </div>
+      <BlockContainer>
+        <Block text={'Назва команди'} />
+        <Block text={'Основний ф.'} />
+        <Block text={'Додатковий ф.'} />
+        <Block text={'Дизайн'} />
+        <Block text={'Презентація'} />
+        <Block text={'Загалом'} />
+      </BlockContainer>
 
-        {table.map((item, i) => (
-          <div key={item.id} className={styles.tableRow}>
-            <div className={styles.tableColum}>{item.commandName}</div>
+      {table.map((item, i) => (
+        <BlockContainer>
+          <Block text={item.commandName} />
 
-            <div className={styles.tableColum}>
-              <input
-                type="text"
-                value={updateTable[i]?.functional ? updateTable[i].functional : ''}
-                onChange={(e) => updateTableChange({ e, id: item.id, row: 'functional' })}
-              />
-            </div>
-
-            <div className={styles.tableColum}>
-              <input
-                type="text"
-                value={updateTable[i]?.code ? updateTable[i].code : ''}
-                onChange={(e) => updateTableChange({ e, id: item.id, row: 'code' })}
-              />
-            </div>
-
-            <div className={styles.tableColum}>
-              <input
-                type="text"
-                value={updateTable[i]?.design ? updateTable[i].design : ''}
-                onChange={(e) => updateTableChange({ e, id: item.id, row: 'design' })}
-              />
-            </div>
-
-            <div className={styles.tableColum}>{item.sum}</div>
+          <div className={styles.tableColum}>
+            <input
+              type="text"
+              value={updateTable[i]?.mainF ? updateTable[i].mainF : ''}
+              onChange={(e) => updateTableChange({ e, id: item.id, row: 'mainF' })}
+            />
           </div>
-        ))}
-      </div>
 
-      <p>{isUpdate ? 'Table is actual' : 'Need update'}</p>
+          <div className={styles.tableColum}>
+            <input
+              type="text"
+              value={updateTable[i]?.optionF ? updateTable[i].optionF : ''}
+              onChange={(e) => updateTableChange({ e, id: item.id, row: 'optionF' })}
+            />
+          </div>
 
-      <button onClick={send}>Update</button>
+          <div className={styles.tableColum}>
+            <input
+              type="text"
+              value={updateTable[i]?.design ? updateTable[i].design : ''}
+              onChange={(e) => updateTableChange({ e, id: item.id, row: 'design' })}
+            />
+          </div>
+
+          <div className={styles.tableColum}>
+            <input
+              type="text"
+              value={updateTable[i]?.presentation ? updateTable[i].presentation : ''}
+              onChange={(e) => updateTableChange({ e, id: item.id, row: 'presentation' })}
+            />
+          </div>
+
+          <Block text={item.sum} />
+        </BlockContainer>
+      ))}
     </>
   );
 }
