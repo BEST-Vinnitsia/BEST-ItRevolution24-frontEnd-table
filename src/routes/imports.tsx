@@ -25,4 +25,6 @@ const Loadable = (Component: ComponentType) => {
 
 // Pages
 export const AdminPage = Loadable(lazy(() => import('../pages/Admin')));
+export const AdminGamePage = Loadable(lazy(() => import('../pages/AdminGame')));
 export const GuestPage = Loadable(lazy(() => import('../pages/Guest')));
+export const GuestGamePage = Loadable(lazy(() => import('../pages/GuestGame')));

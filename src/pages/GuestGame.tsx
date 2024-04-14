@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { ITable } from '../types/table.type';
+import { ITable, ITableGame } from '../types/table.type';
 import { useConnectSocket } from '../hooks/useConnectSocket';
 import Table from '../components/Table';
 import styles from '../styles/bg.module.scss';
 import BGImg from '../assets/bg.png';
 import {ReactComponent as BestLogo} from '../assets/best logo.svg';
 import {ReactComponent as ITLogo} from '../assets/logo.svg';
+import { useConnectSocketGame } from '../hooks/useConnectSocketGame';
+import TableGame from '../components/TableGame';
 
-export default function GuestPage() {
-  const resTable = useConnectSocket();
-  const table = !resTable ? [] : (JSON.parse(resTable) as ITable[]);
+export default function GuestGamePage() {
+  const resTable = useConnectSocketGame();
+  const table = !resTable ? [] : (JSON.parse(resTable) as ITableGame[]);
 
   // useEffect(() => {
   //   socketService.tableInfo().then((res) => {
@@ -44,7 +46,7 @@ export default function GuestPage() {
           </span>
         </div>
 
-        <Table table={table} />
+        <TableGame table={table} />
       </div>
     </>
   );
