@@ -1,13 +1,6 @@
-import { useState } from 'react';
-import { motion, usePresence, MotionProps, MotionStyle } from 'framer-motion';
-import { ITable, ITableGame } from '../types/table.type';
-import { Block, BlockContainer } from './block';
+import { MotionProps, MotionStyle, usePresence } from 'framer-motion';
 
-interface IProps {
-  data: ITableGame;
-}
-
-export default function TableRowGame({ data }: IProps) {
+export const useAnimation = () => {
   const [isPresent, safeToRemove] = usePresence();
 
   const animations: MotionProps & { style: MotionStyle } = {
@@ -31,19 +24,5 @@ export default function TableRowGame({ data }: IProps) {
     },
   };
 
-  return (
-    <>
-      <motion.tr {...animations}>
-        <BlockContainer>
-          <Block text={data.commandName} />
-          <Block text={data.mainF} />
-          <Block text={data.optionF} />
-          <Block text={data.design} />
-          <Block text={data.voice} />
-          <Block text={data.presentation} />
-          <Block text={data.sum} />
-        </BlockContainer>
-      </motion.tr>
-    </>
-  );
+  return animations
 }

@@ -2,13 +2,18 @@ import React from 'react';
 import { Navigate, useRoutes } from 'react-router-dom';
 
 // Imports
-import { AdminPage, GuestPage, GuestGamePage,  AdminGamePage } from './imports';
+import { AdminPage, GuestPage } from './imports';
+import { Table1Provider } from '../contexts/table1Context';
 
 export default function Router() {
   return useRoutes([
-    { path: 'admin', element: <AdminPage /> },
-    { path: 'admin-game', element: <AdminGamePage /> },
-    { path: '', element: <GuestPage /> },
-    { path: 'game', element: <GuestGamePage /> },
+    {
+      path: '',
+      element: <Table1Provider />,
+      children: [
+        { path: '', element: <GuestPage /> },
+        { path: 'admin', element: <AdminPage /> },
+      ],
+    },
   ]);
 }

@@ -1,51 +1,60 @@
-import React, { useEffect, useState } from 'react';
-import { ITable } from '../types/table.type';
-import { useConnectSocket } from '../hooks/useConnectSocket';
-import Table from '../components/Table';
-import styles from '../styles/bg.module.scss';
-import BGImg from '../assets/bg.png';
-import {ReactComponent as BestLogo} from '../assets/best logo.svg';
-import {ReactComponent as ITLogo} from '../assets/logo.svg';
+import React from 'react';
+import Header from '../components/header/Header';
+import Bg from '../components/bg/Bg';
+import { Row } from '../components/table/Row';
+import { Item } from '../components/table/Item';
+import { AnimatePresence, motion } from 'framer-motion';
+import './styles.css';
+import { useAnimation } from '../hooks/useAnimation';
+import { useTable1Context } from '../contexts/table1Context';
+
+interface IAnimateRow {
+  row: ITable;
+}
 
 export default function GuestPage() {
-  const resTable = useConnectSocket();
-  const table = !resTable ? [] : (JSON.parse(resTable) as ITable[]);
-
-  // useEffect(() => {
-  //   socketService.tableInfo().then((res) => {
-  //     setTable(res);
-  //   });
-
-  //   socketService.newTableInfo().then((res) => {
-  //     setTable(res);
-  //   });
-  // }, []);
+  const { table } = useTable1Context();
 
   return (
     <>
-      <div className={styles['main-container']}>
-        <div className={styles['bg']} style={{
-          backgroundImage: `url(${BGImg})`
-        }} />
+      <div className={'main-container'}>
+        <Bg />
+        <Header />
 
-        {/*<div className={styles['header-block']} />*/}
+        <Row>
+          <Item text={'Назва команди'} />
+          <Item text={'Основний ф.'} />
+          <Item text={'Додатковий ф.'} />
+          <Item text={'Дизайн'} />
+          <Item text={'Презентація'} />
+          <Item text={'Загалом'} />
+        </Row>
 
-        <div className={styles['header']}>
-          <span className={styles['header__logo']}>
-            <BestLogo />
-          </span>
-
-          <div className={styles['header__title']}>
-            ТАБЛИЦЯ ЛІДЕРІВ
-          </div>
-
-          <span className={styles['header__logo']}>
-            <ITLogo />
-          </span>
-        </div>
-
-        <Table table={table} />
+        <AnimatePresence>
+          {table
+            .sort((sortA, sortB) => +sortB.sum - +sortA.sum)
+            .map((item) => (
+              <AnimateRow key={item.id} row={item} />
+            ))}
+        </AnimatePresence>
       </div>
     </>
   );
 }
+
+const AnimateRow = ({ row }: IAnimateRow) => {
+  const animations = useAnimation();
+
+  return (
+    <motion.div {...animations}>
+      <Row>
+        <Item text={row.commandName} />
+        <Item text={row.mainF} />
+        <Item text={row.optionF} />
+        <Item text={row.design} />
+        <Item text={row.presentation} />
+        <Item text={row.sum} />
+      </Row>
+    </motion.div>
+  );
+};

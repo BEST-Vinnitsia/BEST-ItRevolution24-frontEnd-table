@@ -1,11 +1,17 @@
 import io, { Socket, connect } from 'socket.io-client';
-import { socketURL } from '../config/api';
 
 export class SocketService {
   static socket: null | Socket = null;
 
   static createConnection() {
-    this.socket = io(socketURL);
+    const socketUrl = process.env.REACT_APP_SOCKET_URL;
+
+    if (!socketUrl) {
+      console.error('socket url is not found');
+      return;
+    }
+
+    this.socket = io(socketUrl);
 
     this.socket.on('connection', () => {
       console.log('Connection');
