@@ -19,7 +19,7 @@ export default function Table1AdminPage() {
       </Row>
 
       {table.map((item) => (
-        <Row>
+        <Row key={item.id}>
           <Item text={item.commandName} />
 
           <Input value={item.mainF} onChange={(e) => updateTableChange({ e, id: item.id, row: 'mainF' })} />
