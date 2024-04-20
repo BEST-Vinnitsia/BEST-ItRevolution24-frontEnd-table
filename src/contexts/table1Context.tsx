@@ -3,8 +3,8 @@ import { SocketService } from '../services/socket';
 import { Outlet } from 'react-router-dom';
 
 interface IProps {
-  table: ITable[];
-  updateTableChange: (data: IUpdateTableChange) => void;
+  table: ITable1[];
+  updateTableChange: (data: IUpdateTable1Change) => void;
 }
 
 const Table1Context = createContext<IProps>(null!);
@@ -15,33 +15,33 @@ interface IContextProvider {
 
 export function Table1Provider({ children }: IContextProvider) {
   const [resData, setResData] = useState<string>('');
-  const [table, setTable] = useState<ITable[]>([]);
+  const [table, setTable] = useState<ITable1[]>([]);
 
   useEffect(() => {
     connectSocket();
   }, []);
 
   useEffect(() => {
-    const getTable = !resData ? [] : (JSON.parse(resData) as ITable[]);
+    const getTable = !resData ? [] : (JSON.parse(resData) as ITable1[]);
     setTable(getTable);
   }, [resData]);
 
   const connectSocket = () => {
     SocketService.createConnection();
 
-    SocketService.socket?.on('tableInfo', (data) => {
+    SocketService.socket?.on('get-table-1', (data) => {
       setResData(JSON.stringify(data));
     });
 
-    SocketService.socket?.on('newTableInfo', (data) => {
+    SocketService.socket?.on('get-new-table-1', (data) => {
       setResData(JSON.stringify(data));
     });
   };
 
-  const updateTableChange = ({ e, id, row }: IUpdateTableChange) => {
+  const updateTableChange = ({ e, id, row }: IUpdateTable1Change) => {
     if (isNaN(+e.target.value)) return;
 
-    SocketService.socket?.emit('updateTable', { id, [row]: e.target.value });
+    SocketService.socket?.emit('update-table-1', { id, [row]: e.target.value });
   };
 
   return (

@@ -4,7 +4,7 @@ import { Item } from '../components/table/Item';
 import { Input } from '../components/input/Input';
 import { useTable1Context } from '../contexts/table1Context';
 
-export default function AdminPage() {
+export default function Table1AdminPage() {
   const { table, updateTableChange } = useTable1Context();
 
   return (

@@ -9,10 +9,10 @@ import { useAnimation } from '../hooks/useAnimation';
 import { useTable1Context } from '../contexts/table1Context';
 
 interface IAnimateRow {
-  row: ITable;
+  row: ITable1;
 }
 
-export default function GuestPage() {
+export default function Table1GuestPage() {
   const { table } = useTable1Context();
 
   return (
@@ -42,6 +42,7 @@ export default function GuestPage() {
   );
 }
 
+// need divide, because animate not start
 const AnimateRow = ({ row }: IAnimateRow) => {
   const animations = useAnimation();
 

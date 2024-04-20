@@ -1,4 +1,4 @@
-interface ITable {
+interface ITable1 {
   id: string;
   commandName: string;
   mainF: string;
@@ -8,7 +8,7 @@ interface ITable {
   sum: string;
 }
 
-interface IUpdateTableChange {
+interface IUpdateTable1Change {
   e: React.ChangeEvent<HTMLInputElement>;
   id: string;
   row: 'mainF' | 'optionF' | 'design' | 'presentation';
